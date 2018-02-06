@@ -1,11 +1,15 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
-const imgURL = "https://ichef.bbci.co.uk/news/660/cpsprodpb/37B5/production/_89716241_thinkstockphotos-523060154.jpg";
 var Jimp = require("jimp");
+var bodyParser = require('body-parser')
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+
 
 app.get('/api', function api(req, res) {
     res.json({
@@ -14,7 +18,8 @@ app.get('/api', function api(req, res) {
 });
 
 app.post('/api/login', function(req, res) {
-
+	userId = req.body.username;
+	password = req.body.password;
     // insert code here to actually authenticate, or fake it
     const user = {
         id: 3

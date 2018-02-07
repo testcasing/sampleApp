@@ -3,12 +3,14 @@ var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var Jimp = require("jimp");
 var bodyParser = require('body-parser')
+//const imgURL = "https://ichef.bbci.co.uk/news/660/cpsprodpb/37B5/production/_89716241_thinkstockphotos-523060154.jpg"
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
+  extended: false
 })); 
+
 
 
 app.get('/api', function api(req, res) {
@@ -49,12 +51,12 @@ app.get('/api/protected', ensureToken, function(req, res) {
 });
 
 
-app.get('/api/resizeimage/:imgURL', ensureToken, function(req, res) {
+app.get('/api/resizeimage/', ensureToken, function(req, res) {
     jwt.verify(req.token, 'secret_key_goes_here', function(err, data) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Jimp.read(req.param('imgURL'), function(err, img) {
+            Jimp.read(req.query.imgURL, function(err, img) {
                 if (err) throw err;
                 img.resize(50, 50).getBase64(Jimp.AUTO, function(e, img64) {
                     if (e) throw e
